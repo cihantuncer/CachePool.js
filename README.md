@@ -167,274 +167,182 @@ myCachePool.reset();
 
 <br>
 
-### Detailed Examples
+### Examples
 
 It's highly recommended to review cachepool.test.js results for better understanding.
 
 []()
 
 
-##### Calling external hook functions directly with `this` reference
+##### Example 1. Cache Object Types
 
 ```javascript
-// We have a Regular Object.
+// It can be regular object.
+let myObject  = {
+   id       : 0,
+   name     : "My Object",
+   status   : "none",
+}
+
+// Constructor function.
+function myConstr{
+   this.id       = 0,
+   this.name     = "My Constructor Instance",
+   this.status   = "none",
+};
+
+// Class.
+class myClass{
+   constructor(){
+      this.id       = 0;
+      this.name     = "My Class Instance";
+      this.status   = "none";
+   }
+};
+
+// Array.
+let myArray = ["some content",1,2,3];
+
+// Also other built-in objects e.g. Map, Set, ArrayBuffer,TypedArray, DataView, Date, RegExp, Error
+```
+
+
+##### Example 2. Calling External Hook Functions Directly With `this` Reference
+
+```javascript
+// We have an object.
+// It can also function, class, array, built-in object etc.
 let myObject  = {
    id       : null,
    name     : "My Object",
    status   : "none",
 }
-// And a Constructor Function.
-function myConstr{
-   this.id      = null,
-   this.name     = "My Constructor Instance",
-   this.status   = "none",
-};
-myConstr.idCounter=0;
-
-// And a Class.
-class myClass{
-
-   constructor(){
-      this.id       = null;
-      this.name     = "My Class Instance";
-      this.status   = "none";
-   }
-
-   static idCounter = 0;
-};
-
-// Also an Array.
-let myArray = ["some content",1,2,3];
 
 // We have some hook functions that will be called for cache objects.
 function initFun(){
    this.status = "I am newly created and stored in the pool.";
    this.name   = "Cached Object";
-
-   console.log(`initFun called on ${this.name} with id ${this.id}`,this);
+   console.log(`initFun called on ${this.name}`,this);
 }
 
 function popFun(){
    this.status = "I was popped out. Prepare me for some action.";
-   this.id     = this.constructor.idCounter++;
    this.name   = "Active Object";
-
-   console.log(`popFun called on ${this.name} with id ${this.id}`,this);
+   console.log(`popFun called on ${this.name}`,this);
 }
 
 function pushFun(){
-   console.log(`pushFun called on ${this.name} with id ${this.id}`,this);
-
+   console.log(`pushFun called on ${this.name}`,this);
    this.status = "I'm being pushed back again. Resetting my props would be a good idea.";
-   this.id     = null;
    this.name   = "Cached Object";
 }
 
-// Counter for ids.
-let idCounter=0;
+// We create a new cache pool and provide hook functions directly as parameters.
 
-// We create a new cache pools and provide hook functions directly as parameters.
-// 10 x 'initFun' will be called on the newly created objects with 'this' reference for each pool.
+// 10 x 'initFun' will be called on the newly created objects with 'this' reference.
 let myObjectPool = new CachePool(myObject, 10, 100, popFun, pushFun, initFun);
-let myConstrPool = new CachePool(myConstr, 10, 100, popFun, pushFun, initFun);
-let myClassPool  = new CachePool(myClass,  10, 100, popFun, pushFun, initFun);
-let myArrayPool  = new CachePool(myArray,  10, 100, popFun, pushFun, initFun);
 
 // Gets cached object from pool, triggers 'popFun' with 'this' reference. 
 let myObj1 = myObjectPool.pop();
-let myCon1 = myConstrPool.pop();
-let myCla1 = myClassPool.pop();
-let myArr1 = myArrayPool.pop();
 
 // Triggers 'pushFun' with 'this' reference, pushes used object back to pool. 
 myObjectPool.push(myObj1);
-myConstrPool.push(myCon1);
-myClassPool.push(myCla1);
-myArrayPool.push(myArr1);
 
 // Clear out references.
 myObj1 = undefined;
-myCon1 = undefined;
-myCla1 = undefined;
-myArr1 = undefined;
 ```
 
 <br>
 
-##### Calling properties and methods as hook functions with `this` reference.
+##### Example 3. Calling properties and methods as hook functions with `this` reference.
 
 ```javascript
-
-// -------------------------------------------------
-// Sample Object
-// -------------------------------------------------
-
-// We have a object with some hook functions as properties in it.
-let myObject  = {
-   id       : null,
-   name     : "My Object",
-   status   : "none",
-
-   // Internal hook functions as properties.
-   // We can point them to outer functions as well.
-   objInit: function(){
-      this.status  = "I am newly created and stored in the pool.";
-      this.name    = "Cached Object";
-      console.log(`objInit called on ${this.name} with id ${this.id}`,this);
-   },
-   
-   objPop: function(){
-      this.status ="I was popped out. Prepare me for some action.";
-      this.id     = objectIdCounter++;
-      this.name   = "Active Object";
-      this.content = "Some Content";
-      console.log(`objPop called on ${this.name} with id ${this.id}`,this);
-   },
-   
-   objPush: function(){
-      this.status="I'm being pushed back again. Resetting my props would be a good idea.";
-      this.id    = null;
-      this.name  = "Cached Object";
-      this.content = "";
-      console.log(`objPush called on ${this.name} with id ${this.id}`,this);
-   }
-}
-// Counter for newly created object ids.
-let objectIdCounter=0;
-
-
-// -------------------------------------------------
-// Sample Array
-// -------------------------------------------------
-
-let myArray = ["some content",1,2,3];
-
-// Arrays can have custom properties and methods.
-// But this can lead to unexpected behaviors and it's not recommended.
-
-myArray.arrayInit = function(){
-   this.status = "I am newly created and stored in the pool.";
-   this.name   = "Cached Object";
-   console.log(`arrayInit called on ${this.name} with id ${this.id}`,this);
-}
-
-myArray.arrayPop = function()(){
-   this.status = "I was popped out. Prepare me for some action.";
-   this.id     = this.constructor.idCounter++;
-   this.name   = "Active Object";
-   console.log(`arrayPop called on ${this.name} with id ${this.id}`,this);
-}
-
-myArray.arrayPush = function()(){
-   console.log(`arrayPush called on ${this.name} with id ${this.id}`,this);
-   this.status = "I'm being pushed back again. Resetting my props would be a good idea.";
-   this.id     = null;
-   this.name   = "Cached Object";
-}
-
-
-// -------------------------------------------------
-// Sample Constructor Function
-// -------------------------------------------------
-
-// And a Constructor Function.
-function myConstr{
-   // We don't need provide init function for CachePool,
-   // because this constructor will be triggered natively
-   // when a cache object is created.
-   //
-   this.id       = null;
-   this.name     = "Cached Object";
-   this.status   = "I am newly created and stored in the pool.";
-   console.log(`This is native constructor and being called on ${this.name} with id ${this.id}`,this);
-}
-
-myConstr.prototype.constrPop = function(){
-   this.id       = myConstr.idCounter++;
-   this.name     = "Active Object";
-   this.status   = "I was popped out. Prepare me for some action.";
-   this.content  = "Some Content";
-   console.log(`constrPop called on ${this.name} with id ${this.id}`,this);
-}
-
-myConstr.prototype.constrPush = function(){
-   this.id      = null;
-   this.name    = "Cached Object";
-   this.status  = "I'm being pushed back again. Resetting my props would be a good idea.";
-   this.content = null;
-   console.log(`constrPush called on ${this.name} with id ${this.id}`,this);
-}
-// Static counter for newly created object ids.
-myConstr.idCounter = 0;
-
-
-// -------------------------------------------------
-// Sample Class
-// -------------------------------------------------
-
-// And a Class.
+// ---- We have a class with some methods. ----
 class myClass{
    // We don't need provide init function for CachePool,
    // because this constructor will be triggered natively when a cache object is created.
    // But if we can also provide a init function, it will be called when an object is created.
     constructor(){
-      this.id       = null;
+      this.id       = myClass.idCounter++;
       this.name     = "Cached Object";
       this.status   = "I am newly created and stored in the pool.";
       console.log(`This is native constructor and being called on ${this.name} with id ${this.id}`,this);	
     }
 
-   classPop(){
+   myPop(){
       this.id       = myClass.idCounter++;
       this.name     = "Active Object";
       this.status   = "I was popped out. Prepare me for some action.";
       this.content  = "Some Content";
-      console.log(`classPop called on ${this.name} with id ${this.id}`,this);
+      console.log(`Class pop fun called on ${this.name} with id ${this.id}`,this);
    },
 
-   classPush(){
+   myPush(){
+	  this.status  = "I'm being pushed back to the pool. Resetting my props would be a good idea.";
       this.id      = null;
       this.name    = "Cached Object";
-      this.status  = "I'm being pushed back again. Resetting my props would be a good idea.";
-      this.content = null;
-      console.log(`classPush called on ${this.name} with id ${this.id}`,this);
+      this.content = undefined;
+      console.log(`Class push fun called on ${this.name} with id ${this.id}`,this);
    }
    // Static counter for newly created object ids.
    static idCounter = 0;
 };
 
+// No init function is needed.
+// 10 x myClass constructor function will be called on the newly created objects with 'this' reference natively.
+let myClassPool  = new CachePool(myClass,  10, 100, "classPop", "classPush");
 
+// Gets cached object from pool, triggers 'pop' hook with 'this' reference. 
+let myInstance1 = myClassPool.pop();
 
-// -------------------------------------------------
-// Pools
-// -------------------------------------------------
-
-// We create new cache pools and give name of hook methods.
-
-// 10 x 'initFun' will be called on the newly created objects with 'this' reference for each pool.
-let myObjectPool = new CachePool(myObject, 10, 100, "objPop", "objPush", "objInit");
-let myArrayPool  = new CachePool(myArray,  10, 100, "arrayPop", "arrayPush", "arrayInit");
-
-// 10 x native constructor will be called on the newly created objects with 'this' reference for each pool.
-let myConstrPool = new CachePool(myConstr, 10, 100, "constrPop", "constrPush"); // No init function is needed.
-let myClassPool  = new CachePool(myClass,  10, 100, "classPop", "classPush");   // No init function is needed.
-
-// Gets cached object from pool, triggers 'pop' hooks with 'this' reference. 
-let myObj1 = myObjectPool.pop();
-let myArr1 = myArrayPool.pop();
-let myCon1 = myConstrPool.pop();
-let myCla1 = myClassPool.pop();
-
-// Triggers 'push' hooks with 'this' reference, pushes used object back to pool. 
-myObjectPool.push(myObj1);
-myArrayPool.push(myArr1);
-myConstrPool.push(myCon1);
-myClassPool.push(myCla1);
+// Triggers 'push' hook with 'this' reference, pushes used object back to pool. 
+myClassPool.push(myClass1);
 
 // Clear out references.
-myObj1 = undefined;
-myArr1 = undefined;
-myCon1 = undefined;
-myCla1 = undefined;
+myClass1 = undefined;
 
+// Other Structures can be used as well.
+
+// ---- Sample constructor with internal hook methods ----
+function myConstr{
+   // We don't need provide init function for CachePool,
+   // because this constructor will be triggered natively
+   // when a cache object is created.
+   this.id       = myConstr.idCounter++;
+   this.name     = "Cached Object";
+   this.status   = "I am newly created and stored in the pool.";
+   console.log(`This is native constructor and being called on ${this.name} with id ${this.id}`,this);
+}
+
+myConstr.prototype.myPop  = function(){...Some pop actions...}
+myConstr.prototype.myPush = function(){...Some push actions...}
+myConstr.idCounter = 0;
+
+// No init function is needed. It has constructor function natively.
+let myConstrPool = new CachePool(myConstr, 10, 100, "myPop", "myPush");
+
+
+// ---- Sample object with internal hook methods ----
+let myObject  = {
+   id     : null,
+   name   : "My Object",
+   status : "none",
+
+   // Internal hook functions as properties.
+   // We can point them to outer functions as well.
+   myInit: function(){...Some init actions...},
+   myPop : function(){...Some pop actions...},
+   myPush: function(){...Some push actions...}
+}
+let myObjectPool = new CachePool(myObject, 10, 100, "myPop", "myPush", "objmyInitInit");
+
+// ---- Sample array with internal hook methods ----
+let myArray = ["some content",1,2,3];
+// Arrays can have custom properties and methods.
+// But this can lead to unexpected behaviors and it's not recommended.
+myArray.myInit = function(){...Some init actions...}
+myArray.myPop  = function(){...Some pop actions...}
+myArray.myPush = function(){...Some push actions...}
+
+let myArrayPool = new CachePool(myArray, 10, 100, "myPop", "myPush", "myInit");
 ```
