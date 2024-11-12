@@ -326,7 +326,7 @@ let myObject  = {
    myPop : function(){...Some pop actions...},
    myPush: function(){...Some push actions...}
 }
-let myObjectPool = new CachePool(myObject, 10, 100, "myPop", "myPush", "objmyInitInit");
+let myObjectPool = new CachePool(myObject, 10, 100, "myPop", "myPush", "myInit");
 
 // ---- Sample array with internal hook methods ----
 let myArray = ["some content",1,2,3];
