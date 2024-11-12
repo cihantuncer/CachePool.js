@@ -32,9 +32,6 @@ Or include it directly in your project:
 ### Basic Usage
 
 ```javascript
-// Import CachePool
-const { CachePool } = require('cachepool.js');
-
 // Our beloved object.
 const myObject = {
    id:0,
