@@ -38,7 +38,7 @@ const myObject = {
    someProp:"Some Content"
 }
 
-// We have created cache pool that contains 100 clones of myObject.
+// We are creating cache pool that contains 100 clones of myObject.
 const myCachePool = new CachePool(myObject,100);
 
 // We are getting 1 cached clone of myObject from myCachePool.
