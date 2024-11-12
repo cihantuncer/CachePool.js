@@ -157,21 +157,14 @@ myCachePool.setMaxSize(30);  // Shrinks to max size. Pool Size:30, Pool Max Size
 ```javascript
 myCachePool.reset();
 ```
-
-
 <br>
 
 ### Examples
 
 It's highly recommended to review test results for better understanding.
 
-You can run tests (also includes examples) with:
-```bash
-npm test
-```
-or just run /test/test.html in the project directory.
+You can run `npm test` command, `/test/test.html` file or `cachepool.test.js` in the project directory to inspect debug logs.
 
-<br>
 
 ##### Example 1. Cache Object Types
 
