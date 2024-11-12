@@ -1,0 +1,19 @@
+{
+  "name": "cachepool.js",
+  "version": "1.0.0",
+  "description": "CachePool is a lightweight, dependency-free caching solution that provides an efficient cache pool for object reuse.",
+  "main": "cachepool.js",
+  "scripts": {
+    "test": "node test/cachepool.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cihantuncer/CachePool.js.git"
+  },
+  "author": "Cihan Tuncer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cihantuncer/CachePool.js/issues"
+  },
+  "homepage": "https://github.com/cihantuncer/CachePool.js#readme"
+}
