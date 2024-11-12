@@ -92,13 +92,11 @@ new CachePool(constructor, initSize, maxSize, popCall, pushCall, initCall, deepC
 
 <br>
 
-**See examples for more details.**
+### Tests
 
 <br>
 
 ### Methods
-
-
 `pop()`: Pops an object from the cache pool. `popCall` is called with 'this' as object reference, if provided.
 **Note**: If there are no stored objects left in the pool, new objects will be created automatically to fulfill request.
 
@@ -169,10 +167,7 @@ myCachePool.reset();
 
 ### Examples
 
-It's highly recommended to review cachepool.test.js results for better understanding.
-
-[]()
-
+It's highly recommended to review test results for better understanding.
 
 ##### Example 1. Cache Object Types
 

@@ -1,6 +1,9 @@
-/**
- * @classdesc Cache Pool.
+/** CachePool.js v1.0.0
+* https://github.com/cihantuncer/cachepool.js
+* (c) 2024, Cihan Tuncer - cihan@cihantuncer.com
+* This code is licensed under MIT license (see LICENSE.md for details)
 */
+
 class CachePool {
 
     /**
