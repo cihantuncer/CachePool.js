@@ -165,6 +165,14 @@ myCachePool.reset();
 
 It's highly recommended to review test results for better understanding.
 
+You can run tests (also includes examples) with:
+```bash
+npm test
+```
+or just run /test/test.html in the project directory.
+
+<br>
+
 ##### Example 1. Cache Object Types
 
 ```javascript
@@ -337,13 +345,3 @@ myArray.myPush = function(){...Some push actions...}
 
 let myArrayPool = new CachePool(myArray, 10, 100, "myPop", "myPush", "myInit");
 ```
-
-### Tests
-
-You can run tests (also includes examples) with:
-```bash
-npm test
-```
-or just run /test/test.html in the project directory.
-
-<br>
