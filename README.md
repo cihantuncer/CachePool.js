@@ -22,7 +22,10 @@ npm install cachepool.js
 ```
 
 Or include it directly in your project:
-`<script src="path/to/cachepool.js"></script>`
+
+```html
+<script src="path/to/cachepool.js"></script>
+```
 
 <br>
 
@@ -89,10 +92,6 @@ new CachePool(constructor, initSize, maxSize, popCall, pushCall, initCall, deepC
 - **(2) Initial Size:** If you don't provide an initial size, the pool will gradually expand as you use it, starting from 1. This can be useful in some cases, but it is recommended to specify an estimated size based on your scenario. You can change it later via setSize().
 - **(2) Initial Max Size:** If you don't provide initial maximum size, the maximum size of the pool will be unlimited.
 - **(4) Hook Functions:** You can provide hook functions directly, as properties or as methods. For example, if cache object constructor is a class or function that has `myPop` method; or it's is an object that has `myPop` property, you can give just its name `"myPop"` as argument. All hook functions will be pointed to cache object as "this" reference.
-
-<br>
-
-### Tests
 
 <br>
 
@@ -256,7 +255,7 @@ myObj1 = undefined;
 class myClass{
    // We don't need provide init function for CachePool,
    // because this constructor will be triggered natively when a cache object is created.
-   // But if we can also provide a init function, it will be called when an object is created.
+   // But we can also provide a init function, it will be called when an object is created.
     constructor(){
       this.id       = myClass.idCounter++;
       this.name     = "Cached Object";
@@ -341,3 +340,13 @@ myArray.myPush = function(){...Some push actions...}
 
 let myArrayPool = new CachePool(myArray, 10, 100, "myPop", "myPush", "myInit");
 ```
+
+### Tests
+
+You can run tests (also includes examples) with:
+```bash
+npm test
+```
+or just run /test/test.html in the project directory.
+
+<br>
