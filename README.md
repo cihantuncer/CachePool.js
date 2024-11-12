@@ -82,7 +82,7 @@ new CachePool(constructor, initSize, maxSize, popCall, pushCall, initCall, deepC
 | popCall     | `function`, `"methodName"`, `true` | Function to call when an object is popped from pool.**(4)**              |
 | pushCall    | `function`, `"methodName"`, `true` | Function to call when an object is pushed to pool.**(4)**                |
 | initCall    | `function`, `"methodName"`, `true` | Function to call when an object is created in the pool.**(4)**           |
-| deepCopy    | `boolean`                          | Indicates if objects should be deep cloned.                             |
+| deepCopy    | `boolean`                          | Indicates if objects should be deep cloned.                              |
 
 #### Notes
 - **(1) Constructor Types:** It can be `Class`, `Function` as constructor to create instances or `object` (`regular Object`, `Array`, `Map`, `Set`, `ArrayBuffer`,`TypedArray`, `DataView`, `Date`, `RegExp`, `Error`) to clone. There is no point in storing `Primitives`, `WeakMap`, `WeakSet` in the cache pool. However, they are acceptable to maintain flexibility and stability.
@@ -342,6 +342,7 @@ function myConstr{
    // We don't need provide init function for CachePool,
    // because this constructor will be triggered natively
    // when a cache object is created.
+   //
    this.id       = null;
    this.name     = "Cached Object";
    this.status   = "I am newly created and stored in the pool.";
@@ -373,10 +374,9 @@ myConstr.idCounter = 0;
 
 // And a Class.
 class myClass{
-
    // We don't need provide init function for CachePool,
-   // because this constructor will be triggered natively
-   // when a cache object is created.
+   // because this constructor will be triggered natively when a cache object is created.
+   // But if we can also provide a init function, it will be called when an object is created.
     constructor(){
       this.id       = null;
       this.name     = "Cached Object";
