@@ -255,7 +255,7 @@ class myClass{
    // because this constructor will be triggered natively when a cache object is created.
    // But we can also provide a init function, it will be called when an object is created.
     constructor(){
-      this.id       = myClass.idCounter++;
+      this.id       = null;
       this.name     = "Cached Object";
       this.status   = "I am newly created and stored in the pool.";
       console.log(`This is native constructor and being called on ${this.name} with id ${this.id}`,this);	
@@ -270,7 +270,7 @@ class myClass{
    },
 
    myPush(){
-	  this.status  = "I'm being pushed back to the pool. Resetting my props would be a good idea.";
+      this.status  = "I'm being pushed back to the pool. Resetting my props would be a good idea.";
       this.id      = null;
       this.name    = "Cached Object";
       this.content = undefined;
