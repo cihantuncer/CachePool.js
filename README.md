@@ -87,8 +87,8 @@ new CachePool(constructor, initSize, maxSize, popCall, pushCall, initCall, deepC
 #### Notes
 - **(1) Constructor Types:** It can be `Class`, `Function` as constructor to create instances or `object` (`regular Object`, `Array`, `Map`, `Set`, `ArrayBuffer`,`TypedArray`, `DataView`, `Date`, `RegExp`, `Error`) to clone. There is no point in storing `Primitives`, `WeakMap`, `WeakSet` in the cache pool. However, they are acceptable to maintain flexibility and stability.
 - **(2) Initial Size:** If you don't provide an initial size, the pool will gradually expand as you use it, starting from 1. This can be useful in some cases, but it is recommended to specify an estimated size based on your scenario. You can change it later via setSize().
-- **(2) Initial Max Size:** If you don't provide initial maximum size, the maximum size of the pool will be unlimited.
-- **(4) Hook Functions:** You can provide hook functions directly, as properties or as methods. For example, if cache object constructor is a class or function that has `myPop` method; or it's is an object that has `myPop` property, you can give just its name `"myPop"` as argument. All hook functions will be pointed to cache object as "this" reference.
+- **(3) Initial Max Size:** If you don't provide initial maximum size, the maximum size of the pool will be unlimited.
+- **(4) Hook Functions:** You can provide hook functions directly, as properties or as methods. For example, if cache object constructor is a class, a function or an object that has `myCall` as method or property; you can give just its name `"myCall"` as argument. All hook functions will be pointed to cache object as "this" reference.
 
 <br>
 
