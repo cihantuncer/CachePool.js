@@ -1,6 +1,6 @@
 {
   "name": "cachepool.js",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "CachePool is a lightweight, dependency-free caching solution that provides an efficient cache pool for object reuse.",
   "main": "cachepool.js",
   "scripts": {
